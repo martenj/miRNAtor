@@ -17,6 +17,15 @@
   </properties>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+           <!--Use filtering so that maven will replace placeholders with values 
+               from the pom e.g. ${project.version} -->
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+		
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -43,6 +52,16 @@
       <groupId>de.charite.compbio</groupId>
       <artifactId>miRNAtor-core</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.charite.compbio</groupId>
+    	<artifactId>jannovar-core</artifactId>
+    	<version>0.13-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.charite.compbio</groupId>
+    	<artifactId>jannovar-cli</artifactId>
+    	<version>0.13-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

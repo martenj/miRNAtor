@@ -3,6 +3,8 @@
  */
 package de.charite.compbio.mirnator;
 
+import java.net.URL;
+
 /**
  * Configuration for the miRNAtor program.
  *
@@ -13,5 +15,17 @@ package de.charite.compbio.mirnator;
  *
  */
 public final class MirnatorOptions {
+
+	/** Path to the directory used for the downloaded transcript/sequence information files */
+	public String downloadPath = "data";
+
+	/** proxy for HTTP */
+	public URL httpProxy = null;
+
+	/** proxy for HTTPS */
+	public URL httpsProxy = null;
+
+	/** proxy for FTP */
+	public URL ftpProxy = null;
 
 }
