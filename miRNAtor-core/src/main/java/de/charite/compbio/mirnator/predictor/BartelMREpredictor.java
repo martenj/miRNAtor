@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import de.charite.compbio.mirnator.constants.MREtype;
 import de.charite.compbio.mirnator.reference.Mirna;
 import de.charite.compbio.mirnator.reference.Mre;
-import de.charite.compbio.mirnator.reference.Sequence;
+import de.charite.compbio.mirnator.reference.SequenceModel;
 
 //import org.apache.commons.lang.text.StrBuilder;
 
@@ -38,14 +38,14 @@ public class BartelMREpredictor extends MREpredictor {
 	private int i_subseq;
 	private int i_check;
 
-	public BartelMREpredictor(Mirna mir, Sequence sequence, BlockingQueue<Mre> mreBeans) {
-		super(mir, sequence, mreBeans);
+	public BartelMREpredictor(Mirna mir, SequenceModel sequenceModel, BlockingQueue<Mre> mreBeans) {
+		super(mir, sequenceModel, mreBeans);
 	}
 
 	@Override
 	public void run() {
-		for (i_subseq = 0; i_subseq < this.sequence.getSequence().length() - 7; i_subseq++) {
-			checkSubsequence(this.sequence.getSequence().subSequence(i_subseq, i_subseq + 8), i_subseq);
+		for (i_subseq = 0; i_subseq < this.sequenceModel.getSequence().length() - 7; i_subseq++) {
+			checkSubsequence(this.sequenceModel.getSequence().subSequence(i_subseq, i_subseq + 8), i_subseq);
 		}
 	}
 
@@ -123,30 +123,30 @@ public class BartelMREpredictor extends MREpredictor {
 					if (start == 1) {
 						// log.log(Level.INFO,
 						// this.transcriptID+":"+this.mirna.getMirName()+" - 6mer site ("+(j+start)+"|"+(j+end)+");");
-						addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end,
+						addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
 								mirna_start, mirna_end, MREtype.SIX));
 					} else {
 						// log.log(Level.INFO,
 						// this.transcriptID+":"+this.mirna.getMirName()+" - 6mer offset site ("+(j+start)+"|"+(j+end)+");");
-						addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end,
+						addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
 								mirna_start, mirna_end, MREtype.OFFSET_SIX));
 					}
 				} else if (match == 7) {
 					if (mm1) {
 						// log.log(Level.INFO,
 						// this.transcriptID+":"+this.mirna.getMirName()+" - 7mer m1 site ("+(j+start)+"|"+(j+end)+");");
-						addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end,
+						addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
 								mirna_start, mirna_end, MREtype.SEVEN_M1));
 					} else {
 						// log.log(Level.INFO,
 						// this.transcriptID+":"+this.mirna.getMirName()+" - 7mer m8 site ("+(j+start)+"|"+(j+end)+");");
-						addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end,
+						addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
 								mirna_start, mirna_end, MREtype.SEVEN_M8));
 					}
 				} else {
 					// log.log(Level.INFO,
 					// this.transcriptID+":"+this.mirna.getMirName()+" - 8mer site ("+(j+start)+"|"+(j+end)+");");
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.EIGHT));
 				}
 			} else if (a1) {
@@ -158,12 +158,12 @@ public class BartelMREpredictor extends MREpredictor {
 				if (start == 0) {
 					// log.log(Level.INFO,
 					// this.transcriptID+":"+this.mirna.getMirName()+" - 8mer A1 site ("+(j+start)+"|"+(j+end)+");");
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.EIGHT_A1));
 				} else {
 					// log.log(Level.INFO,
 					// this.transcriptID+":"+this.mirna.getMirName()+" - 7mer A1 site ("+(j+start)+"|"+(j+end)+");");
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.SEVEN_A1));
 				}
 

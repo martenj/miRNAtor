@@ -10,7 +10,7 @@ import de.charite.compbio.mirnator.constants.Base;
 import de.charite.compbio.mirnator.constants.MREtype;
 import de.charite.compbio.mirnator.reference.Mirna;
 import de.charite.compbio.mirnator.reference.Mre;
-import de.charite.compbio.mirnator.reference.Sequence;
+import de.charite.compbio.mirnator.reference.SequenceModel;
 
 /**
  * @author mjaeger
@@ -43,11 +43,11 @@ public class ChiMREpredictor extends MREpredictor {
 	 * @param mir
 	 *            - miRNA family collapsed by the seed sequences
 	 * @param sequences
-	 *            - list with {@link Sequence}s
+	 *            - list with {@link SequenceModel}s
 	 * @param mreBeans
 	 */
-	public ChiMREpredictor(Mirna mir, Sequence sequence, BlockingQueue<Mre> mreBeans) {
-		super(mir, sequence, mreBeans);
+	public ChiMREpredictor(Mirna mir, SequenceModel sequenceModel, BlockingQueue<Mre> mreBeans) {
+		super(mir, sequenceModel, mreBeans);
 	}
 
 	/*
@@ -58,8 +58,8 @@ public class ChiMREpredictor extends MREpredictor {
 	@Override
 	public void run() {
 
-		for (i_subseq = 0; i_subseq < this.sequence.sequence.length() - 8; i_subseq++) {
-			if (checkSubsequence(this.sequence.sequence.subSequence(i_subseq, i_subseq + 9), i_subseq))
+		for (i_subseq = 0; i_subseq < this.sequenceModel.sequence.length() - 8; i_subseq++) {
+			if (checkSubsequence(this.sequenceModel.sequence.subSequence(i_subseq, i_subseq + 9), i_subseq))
 				i_subseq++;
 		}
 	}
@@ -142,16 +142,16 @@ public class ChiMREpredictor extends MREpredictor {
 				int sequence_end = j + subSequence.length() - start - bulg + 1;
 
 				if (this.bulgType == Base.A)
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.BULG_A));
 				if (this.bulgType == Base.C)
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.BULG_C));
 				if (this.bulgType == Base.G)
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.BULG_G));
 				if (this.bulgType == Base.U)
-					addMreToCollection(new Mre(this.mirna, this.sequence, sequence_start, sequence_end, mirna_start,
+					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
 							mirna_end, MREtype.BULG_U));
 				return true;
 			}

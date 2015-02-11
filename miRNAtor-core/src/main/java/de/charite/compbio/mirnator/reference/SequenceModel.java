@@ -7,29 +7,23 @@ package de.charite.compbio.mirnator.reference;
  * @author Marten Jäger <marten.jaeger@charite.de>
  *
  */
-public class Sequence {
+public class SequenceModel {
 
-	/** Unique sequence identifier */
-	String id;
+	/** The sequence identifier. This ID has to be unique in the used dataset. */
+	public final String accession;
 	/** The sequence */
-	String sequence;
+	public final String sequence;
 
 	/**
-	 * plain contructor.
-	 */
-	public Sequence() {
-	}
-
-	/**
-	 * Creates a new simple {@link Sequence}.
+	 * Creates a new simple {@link SequenceModel}.
 	 * 
 	 * @param id
 	 *            unique ID
 	 * @param sequence
 	 *            sequence representation
 	 */
-	public Sequence(String id, String sequence) {
-		this.id = id;
+	public SequenceModel(String accession, String sequence) {
+		this.accession = accession;
 		this.sequence = sequence;
 	}
 
@@ -39,17 +33,7 @@ public class Sequence {
 	 * @return the id
 	 */
 	public String getId() {
-		return id;
-	}
-
-	/**
-	 * Sets the sequence ID. This ID has to be unique in the used dataset.
-	 * 
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
+		return accession;
 	}
 
 	/**
@@ -59,16 +43,6 @@ public class Sequence {
 	 */
 	public String getSequence() {
 		return sequence;
-	}
-
-	/**
-	 * Sets the sequence.
-	 * 
-	 * @param sequence
-	 *            the sequence to set
-	 */
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
 	}
 
 }

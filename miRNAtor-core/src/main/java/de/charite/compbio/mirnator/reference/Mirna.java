@@ -7,17 +7,20 @@ package de.charite.compbio.mirnator.reference;
  * @author Marten Jäger <marten.jaeger@charite.de>
  *
  */
-public class Mirna {
+public class Mirna extends SequenceModel {
 	private String name;
-	private String accession;
-	private String sequence;
+	// private String accession;
+	// private String sequence;
 	private String species;
-	private int family;
+	private MirnaFamily family;
 
-	public Mirna(String name, String accession, String sequence, String species, int family) {
+	public Mirna(String accession, String sequence) {
+		this(accession, sequence, null, null, null);
+	}
+
+	public Mirna(String accession, String sequence, String name, String species, MirnaFamily family) {
+		super(accession, sequence);
 		this.name = name;
-		this.accession = accession;
-		this.sequence = sequence;
 		this.species = species;
 		this.family = family;
 	}
@@ -50,15 +53,15 @@ public class Mirna {
 		return accession;
 	}
 
-	/**
-	 * Set the miRNA accession number (e.g. MIMAT0012112).
-	 * 
-	 * @param accession
-	 *            the accession to set
-	 */
-	public void setAccession(String accession) {
-		this.accession = accession;
-	}
+	// /**
+	// * Set the miRNA accession number (e.g. MIMAT0012112).
+	// *
+	// * @param accession
+	// * the accession to set
+	// */
+	// public void setAccession(String accession) {
+	// this.accession = accession;
+	// }
 
 	/**
 	 * Set the miRNA sequence (e.g. CUGUACAGCCUCCUAGCUUUCC).
@@ -69,15 +72,15 @@ public class Mirna {
 		return sequence;
 	}
 
-	/**
-	 * Set the miRNA sequence (e.g. CUGUACAGCCUCCUAGCUUUCC).
-	 * 
-	 * @param sequence
-	 *            the sequence to set
-	 */
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
+	// /**
+	// * Set the miRNA sequence (e.g. CUGUACAGCCUCCUAGCUUUCC).
+	// *
+	// * @param sequence
+	// * the sequence to set
+	// */
+	// public void setSequence(String sequence) {
+	// this.sequence = sequence;
+	// }
 
 	/**
 	 * Get the miRNA species in 3 letter code (e.g.hsa - homo sapien).
@@ -103,7 +106,7 @@ public class Mirna {
 	 * 
 	 * @return the family
 	 */
-	public int getFamily() {
+	public MirnaFamily getFamily() {
 		return family;
 	}
 
@@ -113,7 +116,7 @@ public class Mirna {
 	 * @param family
 	 *            the family to set
 	 */
-	public void setFamily(int family) {
+	public void setFamily(MirnaFamily family) {
 		this.family = family;
 	}
 

@@ -15,7 +15,7 @@ public class MirnaFamily {
 	private ArrayList<Mirna> members;
 
 	/**
-	 * Constructs a "empty" miRNA Family with no name or accession, but inits the member ArrayList.
+	 * Constructs an "empty" miRNA Family with no name or accession, but inits the member ArrayList.
 	 */
 	public MirnaFamily() {
 		this.members = new ArrayList<Mirna>();

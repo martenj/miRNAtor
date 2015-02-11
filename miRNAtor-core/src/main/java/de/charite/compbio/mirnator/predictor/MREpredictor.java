@@ -7,7 +7,7 @@ import java.util.concurrent.BlockingQueue;
 
 import de.charite.compbio.mirnator.reference.Mirna;
 import de.charite.compbio.mirnator.reference.Mre;
-import de.charite.compbio.mirnator.reference.Sequence;
+import de.charite.compbio.mirnator.reference.SequenceModel;
 
 /**
  * @author mjaeger
@@ -16,7 +16,7 @@ import de.charite.compbio.mirnator.reference.Sequence;
 public abstract class MREpredictor implements Runnable {
 
 	protected Mirna mirna;
-	protected Sequence sequence;
+	protected SequenceModel sequenceModel;
 
 	// protected ArrayList<Mre> mres;
 	// protected ArrayList<Mre> mres_local;
@@ -26,9 +26,9 @@ public abstract class MREpredictor implements Runnable {
 
 	private BlockingQueue<Mre> mre_collection;
 
-	public MREpredictor(Mirna mir, Sequence sequence, BlockingQueue<Mre> mreBeans) {
+	public MREpredictor(Mirna mir, SequenceModel sequenceModel, BlockingQueue<Mre> mreBeans) {
 		this.mirna = mir;
-		this.sequence = sequence;
+		this.sequenceModel = sequenceModel;
 		this.mre_collection = mreBeans;
 		// this.mres_local = new ArrayList<Mre>(MREpredictor.max_mres);
 	}
