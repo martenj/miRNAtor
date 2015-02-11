@@ -1,6 +1,11 @@
 package de.charite.compbio.mirnator;
 
+import de.charite.compbio.jannovar.cmd.CommandLineParsingException;
+import de.charite.compbio.jannovar.cmd.HelpRequestedException;
 import de.charite.compbio.mirnator.cmd.MirnatorCommand;
+import de.charite.compbio.mirnator.cmd.download.DownloadCommand;
+import de.charite.compbio.mirnator.cmd.find.FindCommand;
+import de.charite.compbio.mirnator.exceptions.MirnatorException;
 
 /**
  * This is the driver class for the miRNAtor command line tool.
@@ -17,6 +22,37 @@ public class App {
 		}
 
 		MirnatorCommand cmd = null;
+		try {
+			if (args[0].equals("find"))
+				cmd = new FindCommand(args);
+			else if (args[0].equals("download"))
+				cmd = new DownloadCommand(args);
+			else if (args[0].equals("-h") | args[0].equals("help")) {
+				printTopLevelHelp();
+				System.exit(1);
+			} else {
+				throw new CommandLineParsingException("unknown subcommand: " + args[0]);
+			}
+		} catch (HelpRequestedException e) {
+			// printTopLevelHelp();
+			// System.exit(1);
+		} catch (CommandLineParsingException e) {
+			System.err.println("Misformated command call: " + e.getMessage());
+			printTopLevelHelp();
+			System.exit(1);
+		}
+
+		// Stop if no command could be created.
+		if (cmd == null)
+			System.exit(1);
+
+		// Execute the command.
+		try {
+			cmd.run();
+		} catch (MirnatorException e) {
+			System.err.println("ERROR: " + e.getMessage());
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -34,8 +70,8 @@ public class App {
 		System.err.println("");
 		System.err.println("Example: java -jar mirnator.jar download mirnas");
 		System.err.println("         java -jar mirnator.jar download hg18/ucsc");
-		System.err.println("         java -jar mirnator.jar find -s sequence.fa -m mirnas.fa");
-		System.err.println("         java -jar mirnator.jar find -s ucsc_hg18.ser -m mirnas.fa");
+		System.err.println("         java -jar mirnator.jar find -s sequence.fa -t mmu mirbase");
+		System.err.println("         java -jar mirnator.jar find -s ucsc_hg18.ser -t hsa mirbase");
 		System.err.println("");
 	}
 
