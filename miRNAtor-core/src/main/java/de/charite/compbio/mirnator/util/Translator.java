@@ -23,6 +23,12 @@ public class Translator {
 
 	}
 
+	/**
+	 * Translates the given sequence in the upper case reverse complement sequence.
+	 * 
+	 * @param seq
+	 * @return upper case reverse complement
+	 */
 	public String getcomplementSequence(String seq) {
 		StringBuilder seqBuild = new StringBuilder(seq);
 		seqBuild = seqBuild.reverse();
