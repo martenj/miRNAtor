@@ -7,10 +7,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
 import de.charite.compbio.mirnator.constants.Base;
-import de.charite.compbio.mirnator.constants.MREtype;
 import de.charite.compbio.mirnator.reference.Mirna;
 import de.charite.compbio.mirnator.reference.Mre;
 import de.charite.compbio.mirnator.reference.SequenceModel;
+import de.charite.compbio.mirnator.util.MreTools;
 
 /**
  * @author mjaeger
@@ -113,16 +113,7 @@ public class ChiMREpredictor extends MREpredictor {
 			T = subSequence.charAt(ChiMREpredictor.MIRNASEEDEND + 1 - i_check - bulg); // char of transcript
 			M = this.mirna.getSequence().charAt(i_check); // char of miRNA
 
-			if ((T == 'A' || T == 'a') && (M == 'T' || M == 'U')) {
-				match++;
-				end++;
-			} else if (M == 'A' && (T == 'T' || T == 'U' || T == 't' || T == 'u')) {
-				match++;
-				end++;
-			} else if (M == 'G' && (T == 'C' || T == 'c')) {
-				match++;
-				end++;
-			} else if (M == 'C' && (T == 'G' || T == 'g')) {
+			if (MreTools.checkComplementaryMatch(T, M)) {
 				match++;
 				end++;
 			} else {
@@ -141,18 +132,18 @@ public class ChiMREpredictor extends MREpredictor {
 				int sequence_start = j + subSequence.length() - end - bulg;
 				int sequence_end = j + subSequence.length() - start - bulg + 1;
 
-				if (this.bulgType == Base.A)
-					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
-							mirna_end, MREtype.BULG_A));
-				if (this.bulgType == Base.C)
-					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
-							mirna_end, MREtype.BULG_C));
-				if (this.bulgType == Base.G)
-					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
-							mirna_end, MREtype.BULG_G));
-				if (this.bulgType == Base.U)
-					addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end, mirna_start,
-							mirna_end, MREtype.BULG_U));
+				// if (this.bulgType == Base.A)
+				// addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
+				// mirna_start, mirna_end, MREtype.BULG_A));
+				// if (this.bulgType == Base.C)
+				// addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
+				// mirna_start, mirna_end, MREtype.BULG_C));
+				// if (this.bulgType == Base.G)
+				// addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
+				// mirna_start, mirna_end, MREtype.BULG_G));
+				// if (this.bulgType == Base.U)
+				// addMreToCollection(new Mre(this.mirna, this.sequenceModel, sequence_start, sequence_end,
+				// mirna_start, mirna_end, MREtype.BULG_U));
 				return true;
 			}
 			// else{
