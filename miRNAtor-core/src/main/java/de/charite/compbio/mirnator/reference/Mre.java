@@ -29,13 +29,17 @@ public final class Mre {
 	public final int mirna_end;
 	/** the {@link MREtype} of the MRE */
 	public final MREtype type;
+	/** has 'A'/'U' binding improvement site at position 9 */
+	public boolean hasPos9UA;
+	/** has compensatory site */
+	public boolean hasCompensatorySite;
 	/**
 	 * the conservation of the MRE in respect to the genomic position - only possible if the sequence is associated with
 	 * a database transcript.
 	 */
-	public final Double conservation;
+	public Double conservation;
 	/** the free energy for the miRNA<->sequence interaction */
-	public final Double free_energy;
+	public Double free_energy;
 
 	public Mre(Mirna mirna, SequenceModel sequenceModel, int sequence_start, int sequence_end, int mirna_start,
 			int mirna_end, MREtype type) {
@@ -238,7 +242,7 @@ public final class Mre {
 	public String toStringFlatFileSimple() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(mirna.accession)
 				.append(",", sequenceModel.accession).append(",", sequence_start).append(",", sequence_end)
-				.append(",", type.ordinal()).append(",", mirna_start).append(",", mirna_end).toString();
+				.append(",", type).append(",", mirna_start).append(",", mirna_end).toString();
 	}
 
 	/**
@@ -253,7 +257,7 @@ public final class Mre {
 	public String toStringFlatFile(int id) {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(id).append(",", mirna.accession)
 				.append(",", sequenceModel.accession).append(",", sequence_start).append(",", sequence_end)
-				.append(",", type.ordinal()).append(",", mirna_start).append(",", mirna_end).append(",", free_energy)
-				.append(",", conservation).toString();
+				.append(",", type).append(",", mirna_start).append(",", mirna_end).append(",", free_energy)
+				.append(",", conservation).append(",", hasPos9UA).append(",", hasCompensatorySite).toString();
 	}
 }
