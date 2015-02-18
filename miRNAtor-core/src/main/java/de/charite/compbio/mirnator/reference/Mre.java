@@ -29,6 +29,8 @@ public final class Mre {
 	public final int mirna_end;
 	/** the {@link MREtype} of the MRE */
 	public final MREtype type;
+	/** has 'A' binding improvement site at position 1 */
+	public boolean hasA1site;
 	/** has 'A'/'U' binding improvement site at position 9 */
 	public boolean hasPos9UA;
 	/** has compensatory site */
