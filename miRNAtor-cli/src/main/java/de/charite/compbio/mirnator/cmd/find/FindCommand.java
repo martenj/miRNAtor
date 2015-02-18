@@ -88,19 +88,21 @@ public class FindCommand extends MirnatorCommand {
 			es = Executors.newFixedThreadPool(options.online_cpus);
 			logger.log(Level.INFO, "will use " + options.online_cpus + " cpus");
 		} else {
-			es = Executors.newFixedThreadPool(options.online_cpus - 1);
-			logger.log(Level.INFO, "will use " + (options.online_cpus - 1) + " cpus");
+			es = Executors.newFixedThreadPool(options.online_cpus > 2 ? options.online_cpus - 1 : options.online_cpus);
+			logger.log(Level.INFO, "will use "
+					+ (options.online_cpus > 2 ? options.online_cpus - 1 : options.online_cpus) + " cpus");
 		}
 
 		logger.log(Level.INFO, "Start predicting MRE sites");
 		int c = 0;
 
-		es.execute(new MREfileWriter(mres, logger.getName(), options.output_file, true));
+		es.execute(new MREfileWriter(mres, logger.getName(), options.output_file, false));
 		int i = 0;
 		for (Mirna mir : mirnas) {
 			for (SequenceModel seq : sequences) {
 				es.execute(new BartelMREpredictor(mir, seq, mres));
 				// es.execute(new ChiMREpredictor(mir, seq, mres));
+				// es.execute(new MreCollectionfactory(mir, seq, mres));
 			}
 			if (++i > 0)
 				break;

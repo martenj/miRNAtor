@@ -23,10 +23,6 @@ public final class Mre {
 	public final int sequence_start;
 	/** the '0'-based end on the {@link SequenceModel} */
 	public final int sequence_end;
-	/** the '0'-based start on the {@link Mirna} */
-	public final int mirna_start;
-	/** the '1'-based end on the {@link Mirna} */
-	public final int mirna_end;
 	/** the {@link MREtype} of the MRE */
 	public final MREtype type;
 	/** has 'A' binding improvement site at position 1 */
@@ -43,19 +39,16 @@ public final class Mre {
 	/** the free energy for the miRNA<->sequence interaction */
 	public Double free_energy;
 
-	public Mre(Mirna mirna, SequenceModel sequenceModel, int sequence_start, int sequence_end, int mirna_start,
-			int mirna_end, MREtype type) {
-		this(mirna, sequenceModel, sequence_start, sequence_end, mirna_start, mirna_end, type, null, null);
+	public Mre(Mirna mirna, SequenceModel sequenceModel, int sequence_start, int sequence_end, MREtype type) {
+		this(mirna, sequenceModel, sequence_start, sequence_end, type, null, null);
 	}
 
-	public Mre(Mirna mirna, SequenceModel sequenceModel, int sequence_start, int sequence_end, int mirna_start,
-			int mirna_end, MREtype type, Double conservation, Double free_energy) {
+	public Mre(Mirna mirna, SequenceModel sequenceModel, int sequence_start, int sequence_end, MREtype type,
+			Double conservation, Double free_energy) {
 		this.mirna = mirna;
 		this.sequenceModel = sequenceModel;
 		this.sequence_start = sequence_start;
 		this.sequence_end = sequence_end;
-		this.mirna_start = mirna_start;
-		this.mirna_end = mirna_end;
 		this.type = type;
 		this.conservation = conservation;
 		this.free_energy = free_energy;
@@ -244,7 +237,8 @@ public final class Mre {
 	public String toStringFlatFileSimple() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(mirna.accession)
 				.append(",", sequenceModel.accession).append(",", sequence_start).append(",", sequence_end)
-				.append(",", type).append(",", mirna_start).append(",", mirna_end).toString();
+				.append(",", type).append(",", hasA1site).append(",", hasPos9UA).append(",", hasCompensatorySite)
+				.toString();
 	}
 
 	/**
@@ -259,7 +253,7 @@ public final class Mre {
 	public String toStringFlatFile(int id) {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(id).append(",", mirna.accession)
 				.append(",", sequenceModel.accession).append(",", sequence_start).append(",", sequence_end)
-				.append(",", type).append(",", mirna_start).append(",", mirna_end).append(",", free_energy)
-				.append(",", conservation).append(",", hasPos9UA).append(",", hasCompensatorySite).toString();
+				.append(",", type).append(",", hasA1site).append(",", hasPos9UA).append(",", hasCompensatorySite)
+				.append(",", free_energy).append(",", conservation).toString();
 	}
 }

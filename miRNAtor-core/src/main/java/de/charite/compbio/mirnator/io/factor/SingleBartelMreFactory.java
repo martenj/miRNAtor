@@ -161,22 +161,21 @@ public class SingleBartelMreFactory {
 
 		// now check: are there at least 6matches and are these contiguous?
 		if (match > 5) {
-			int mirna_start = MreTools.MINSEEDLENGTH - end;
-			int mirna_end = MreTools.MINSEEDLENGTH - start;
+			// int mirna_start = MreTools.MINSEEDLENGTH - end;
+			// int mirna_end = MreTools.MINSEEDLENGTH - start;
 			int sequence_start = idx - end;
 			int sequence_end = idx - start;
 
 			if (match == 6) {
 				if (start == 1) { // match 2-7/ / and A1?
-					mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, mirna_start, mirna_end,
-							hasA1 ? MREtype.SEVEN_A1 : MREtype.SIX);
+					mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, hasA1 ? MREtype.SEVEN_A1
+							: MREtype.SIX);
 				} else {
-					mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, mirna_start, mirna_end,
-							MREtype.OFFSET_SIX);
+					mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, MREtype.OFFSET_SIX);
 				}
 			} else { // this could only be 7 matches // and A1?
-				mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, mirna_start, mirna_end,
-						hasA1 ? MREtype.EIGHT_A1 : MREtype.SEVEN_M8);
+				mre_dummy = new Mre(mirna, sequenceModel, sequence_start, sequence_end, hasA1 ? MREtype.EIGHT_A1
+						: MREtype.SEVEN_M8);
 			}
 			return mre_dummy;
 		}
