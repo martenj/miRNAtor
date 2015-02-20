@@ -58,5 +58,11 @@
     	<artifactId>jannovar-core</artifactId>
     	<version>0.13-SNAPSHOT</version>
     </dependency>
+    
+    <dependency>
+    	<groupId>de.charite.compbio</groupId>
+    	<artifactId>jannovar-cli</artifactId>
+    	<version>0.13-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
