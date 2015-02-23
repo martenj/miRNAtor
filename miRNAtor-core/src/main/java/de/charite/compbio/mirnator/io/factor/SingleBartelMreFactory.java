@@ -47,7 +47,7 @@ public class SingleBartelMreFactory {
 	}
 
 	public Mre build() {
-		if (checkSeedMatch(mirna.sequence, sequenceModel.sequence, i_subseq) != null) {
+		if (checkSeedMatch(mirna.sequence, sequenceModel.sequence) != null) {
 			// check for target target A/U at position 9
 			if (checkAU9site())
 				mre_dummy.hasPos9UA = true;
@@ -98,14 +98,16 @@ public class SingleBartelMreFactory {
 	}
 
 	/**
-	 * Checks if the 9th binding position between miRNA<>mRNA is an 'A' or 'U' in the target sequence
+	 * Checks if the 9th binding position between miRNA<>mRNA is an 'A' or 'U' in the target sequence Check:<br>
+	 * - current position bigger than the minimum seed length (8) -> we are checking position 9
 	 * 
 	 * @return true if 'A'/'U' at 9. target position
 	 */
 	private boolean checkAU9site() {
-		if (i_subseq < this.sequenceModel.sequence.length() - 9
-				&& (MreTools.checkComplementaryMatch(sequenceModel.sequence.charAt(i_subseq), 'U') || MreTools
-						.checkComplementaryMatch(sequenceModel.sequence.charAt(i_subseq), 'A'))) {
+		if (i_subseq >= MreTools.MINSEEDLENGTH
+				&& (MreTools.checkComplementaryMatch(sequenceModel.sequence.charAt(i_subseq - MreTools.MINSEEDLENGTH),
+						'U') || MreTools.checkComplementaryMatch(
+						sequenceModel.sequence.charAt(i_subseq - MreTools.MINSEEDLENGTH), 'A'))) {
 			mre_dummy.hasPos9UA = true;
 			return true;
 		} else
@@ -124,7 +126,7 @@ public class SingleBartelMreFactory {
 	 *            the starting position in the sequence (inclusive)
 	 * @return the miRNA seed match {@link MREtype} or <code>null</code> if no seed match was found.
 	 */
-	private Mre checkSeedMatch(String mirna_sequence, String target_sequence, int idx) {
+	private Mre checkSeedMatch(String mirna_sequence, String target_sequence) {
 		int mismatch = 0;
 		int match = 0;
 		int start = 0;
@@ -133,22 +135,26 @@ public class SingleBartelMreFactory {
 		boolean hasA1 = false;
 
 		// check if the sequence is at least 8 bp long
-		if (idx < MreTools.MINSEEDLENGTH)
+		if (i_subseq < MreTools.MINSEEDLENGTH - 1)
 			return null;
 
+		// System.out.println("i\tstart\tend\tmatch\tmmatch\thasA1");
 		// check each position
 		for (int i = 0; i < MreTools.MINSEEDLENGTH; i++) {
+			// System.out.print(i + "\t" + start + "\t" + end + "\t" + match + "\t" + mismatch + "\t" + hasA1);
+			// System.out.println("\tcheck: " + target_sequence.charAt(i_subseq - i) + " - " +
+			// mirna_sequence.charAt(i));
 			if (mismatch > 1)
 				break;
 			// check for 'A' in the first target position
 			if (start == 0) {
-				if (MreTools.checkComplementaryMatch(target_sequence.charAt(idx - i), 'U'))
+				if (MreTools.checkComplementaryMatch(target_sequence.charAt(i_subseq - i), 'U'))
 					hasA1 = true;
 				start++;
 				continue;
 			}
 
-			if (MreTools.checkComplementaryMatch(target_sequence.charAt(idx - i), mirna_sequence.charAt(i))) {
+			if (MreTools.checkComplementaryMatch(target_sequence.charAt(i_subseq - i), mirna_sequence.charAt(i))) {
 				end++;
 				match++;
 			} else {
@@ -161,10 +167,8 @@ public class SingleBartelMreFactory {
 
 		// now check: are there at least 6matches and are these contiguous?
 		if (match > 5) {
-			// int mirna_start = MreTools.MINSEEDLENGTH - end;
-			// int mirna_end = MreTools.MINSEEDLENGTH - start;
-			int sequence_start = idx - end;
-			int sequence_end = idx - start;
+			int sequence_start = i_subseq - match - (start > 1 ? 1 : 0); // correct for offset
+			int sequence_end = i_subseq - start + 1; // add mismatch for first position exclusive
 
 			if (match == 6) {
 				if (start == 1) { // match 2-7/ / and A1?
@@ -182,5 +186,4 @@ public class SingleBartelMreFactory {
 
 		return null;
 	}
-
 }
