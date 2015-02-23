@@ -50,6 +50,12 @@ public final class Mre {
 		this.sequence_start = sequence_start;
 		this.sequence_end = sequence_end;
 		this.type = type;
+		switch (type) {
+		case SEVEN_A1:
+		case EIGHT_A1:
+			this.hasA1site = true;
+			break;
+		}
 		this.conservation = conservation;
 		this.free_energy = free_energy;
 	}
