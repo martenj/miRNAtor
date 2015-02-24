@@ -14,7 +14,7 @@ import de.charite.compbio.mirnator.reference.Mre;
 public class MreTools {
 	public final static int MINSEEDLENGTH = 8;
 	public final static int MINCOMPENSATORYCONTINUOUSLENGTH = 4;
-	public final static int MIRNACOMPENSATORYSITESTART = 11; // normally 12 but we are operating with '0'-based
+	public final static int MIRNACOMPENSATORYSITESTART = 12; // normally 12 but we are operating with '0'-based
 																// indexes
 
 	/**
