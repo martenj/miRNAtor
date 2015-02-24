@@ -52,10 +52,11 @@ public class SingleBartelMreFactory {
 			if (checkAU9site())
 				mre_dummy.hasPos9UA = true;
 			// check for compensatory
-			int i = 1;
+			int i = 0;
 			// System.out.println(".");
-			while (!mre_dummy.hasCompensatorySite && i <= 5) {
-				checkCompensatorySite(i_subseq - MreTools.MINSEEDLENGTH - i);
+			while (!mre_dummy.hasCompensatorySite && i < 5) {
+				checkCompensatorySite(i_subseq - MreTools.MINSEEDLENGTH - i - 2);
+				// System.out.println(i_subseq - MreTools.MINSEEDLENGTH - i - 2);
 				i++;
 			}
 		}
@@ -76,19 +77,21 @@ public class SingleBartelMreFactory {
 		// int c_end = 0;
 		// int c_start = 0;
 		// false if not enough target sequence to check
-		if (c_idx < MreTools.MINCOMPENSATORYCONTINUOUSLENGTH + 1)
+		if (c_idx < MreTools.MINCOMPENSATORYCONTINUOUSLENGTH)
 			return;
 		// look up matches
-		for (int i = 0; i < MreTools.MINCOMPENSATORYCONTINUOUSLENGTH + 1; i++) {
-			if (c_mismatch > 1)
+		for (int i = 0; i < MreTools.MINCOMPENSATORYCONTINUOUSLENGTH; i++) {
+			if (c_mismatch > 0)
 				break;
+			// System.out.println(sequenceModel.sequence.charAt(c_idx - i) + " - "
+			// + mirna.sequence.charAt(i + MreTools.MIRNACOMPENSATORYSITESTART));
 			if (MreTools.checkComplementaryMatch(sequenceModel.sequence.charAt(c_idx - i),
 					mirna.sequence.charAt(i + MreTools.MIRNACOMPENSATORYSITESTART))) {
 				// end++;
-				// match++;
+				c_match++;
 			} else {
 				// c_start++;
-				// mismatch++;
+				c_mismatch++;
 			}
 		}
 
