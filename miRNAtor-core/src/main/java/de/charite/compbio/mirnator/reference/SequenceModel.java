@@ -1,5 +1,7 @@
 package de.charite.compbio.mirnator.reference;
 
+import java.io.Serializable;
+
 /**
  * This is the simplest possible sequence representation. Only consisting of an identifier and the corresponding
  * sequence.
@@ -7,8 +9,10 @@ package de.charite.compbio.mirnator.reference;
  * @author Marten Jäger <marten.jaeger@charite.de>
  *
  */
-public class SequenceModel {
+public class SequenceModel implements Serializable, Comparable<SequenceModel> {
 
+	/** Class version (for serialization). */
+	private static final long serialVersionUID = 1L;
 	/** The sequence identifier. This ID has to be unique in the used dataset. */
 	public final String accession;
 	/** The sequence */
@@ -37,7 +41,7 @@ public class SequenceModel {
 	}
 
 	/**
-	 * Returns the sequence.
+	 * Returns the sequence. (e.g. cDNA)
 	 * 
 	 * @return the sequence
 	 */
@@ -45,4 +49,27 @@ public class SequenceModel {
 		return sequence;
 	}
 
+	public String toFastaFormat() {
+		return toFastaFormat(60);
+	}
+
+	public String toFastaFormat(int b) {
+		StringBuilder res = new StringBuilder().append(toFastaHeader()).append("\n");
+		int c = 0;
+		while (c + b < sequence.length()) {
+			res.append(sequence.substring(c, c + b)).append("\n");
+			c += b;
+		}
+		res.append(sequence.substring(c));
+		return res.toString();
+	}
+
+	protected String toFastaHeader() {
+		return new StringBuilder().append(">").append(accession).toString();
+	}
+
+	@Override
+	public int compareTo(SequenceModel o) {
+		return this.accession.compareTo(o.accession);
+	}
 }
