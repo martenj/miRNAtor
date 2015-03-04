@@ -3,6 +3,7 @@
  */
 package de.charite.compbio.mirnator.cmd.find;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -19,14 +20,13 @@ import de.charite.compbio.jannovar.cmd.HelpRequestedException;
 import de.charite.compbio.mirnator.MirnatorOptions;
 import de.charite.compbio.mirnator.cmd.MirnatorCommand;
 import de.charite.compbio.mirnator.exceptions.MirnatorException;
-import de.charite.compbio.mirnator.io.parser.ensembl.EnsemblFastaSimpleParser;
+import de.charite.compbio.mirnator.io.parser.ensembl.EnsemblFastaParser;
 import de.charite.compbio.mirnator.io.parser.mirna.MirbaseFastaParser;
 import de.charite.compbio.mirnator.io.writer.MREfileWriter;
 import de.charite.compbio.mirnator.predictor.BartelMREpredictor;
 import de.charite.compbio.mirnator.reference.Mirna;
 import de.charite.compbio.mirnator.reference.Mre;
 import de.charite.compbio.mirnator.reference.SequenceModel;
-import de.charite.compbio.mirnator.reference.SimpleTranscriptModel;
 
 /**
  * Will find all mirna binding sites for the given sequences and mirnas.
@@ -72,16 +72,9 @@ public class FindCommand extends MirnatorCommand {
 		ArrayList<Mirna> mirnas = mbfp.getMirnas(options.taxon);
 		logger.info("Found " + mirnas.size() + " mirnas.");
 
-		// init sequences
-		EnsemblFastaSimpleParser efsp = new EnsemblFastaSimpleParser(options.sequence_path);
-		ArrayList<SimpleTranscriptModel> sequences = efsp.parseSequence();
-
-		logger.info("Found " + sequences.size() + " transcripts.");
-
-		// inti MREs
+		// init MREs
 		BlockingQueue<Mre> mres = new LinkedBlockingQueue<Mre>();
 		// predict MREs
-		// System.exit(0);
 		ExecutorService es;
 
 		if (options.online_cpus == 1) {
@@ -96,17 +89,25 @@ public class FindCommand extends MirnatorCommand {
 		logger.log(Level.INFO, "Start predicting MRE sites");
 		int c = 0;
 
-		es.execute(new MREfileWriter(mres, logger.getName(), options.output_file, false));
+		es.execute(new MREfileWriter(mres, logger.getName(), options.output_file, true));
 		int i = 0;
-		for (Mirna mir : mirnas) {
-			for (SequenceModel seq : sequences) {
-				es.execute(new BartelMREpredictor(mir, seq, mres));
-				// es.execute(new ChiMREpredictor(mir, seq, mres));
-				// es.execute(new MreCollectionfactory(mir, seq, mres));
+		// init SequenceModel iterator
+		EnsemblFastaParser efp;
+		try {
+			efp = new EnsemblFastaParser(options.sequence_path);
+			for (SequenceModel seq : efp) {
+
+				for (Mirna mir : mirnas) {
+					es.execute(new BartelMREpredictor(mir, seq, mres));
+				}
+				if (++i > 10)
+					break;
 			}
-			if (++i > 0)
-				break;
+		} catch (IOException e1) {
+			throw new MirnatorException("Failed to open the Sequence Fasta file");
 		}
+
+		efp.close();
 		es.shutdown();
 		try {
 			es.awaitTermination(1, TimeUnit.SECONDS);
@@ -115,6 +116,5 @@ public class FindCommand extends MirnatorCommand {
 			System.exit(1);
 		}
 		logger.log(Level.INFO, "finished predicting MREs");
-		//
 	}
 }

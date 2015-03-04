@@ -2,11 +2,12 @@ package de.charite.compbio.mirnator.reference;
 
 /**
  * A typical taxon object contains at least the following four informations:<br>
- * symbol - the letter code (e.g. hsa, mmu) common Name - the common name of the species (e.g. Human, Mouse) species -
- * the latin name of the species (e.g. homo sapiens, mus musculus) taxID - the taxonomy ID from NCBI taxonomy database
- * (e.g. 9606, 10090)
+ * symbol - the letter code (e.g. hsa, mmu)<br>
+ * common Name - the common name of the species (e.g. Human, Mouse)<br>
+ * species - the latin name of the species (e.g. homo sapiens, mus musculus)<br>
+ * taxID - the taxonomy ID from NCBI taxonomy database (e.g. 9606, 10090)
  * 
- * @author mjaeger
+ * @author Marten Jäger <marten.jaeger@charite.de>
  *
  */
 public class Taxon {

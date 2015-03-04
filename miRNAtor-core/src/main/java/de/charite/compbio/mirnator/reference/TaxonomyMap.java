@@ -2,6 +2,13 @@ package de.charite.compbio.mirnator.reference;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * 
+ *
+ * @author Marten Jäger <marten.jaeger@charite.de>
+ *
+ */
 public class TaxonomyMap {
 
 	private static Taxon[] taxons;

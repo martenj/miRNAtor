@@ -53,9 +53,9 @@ public class MREfileWriter implements Runnable {
 			this.buf = IOUtil.getBufferedFileWriter(new File(filename));
 			int id = 1;
 			if (this.simpleFormat)
-				buf.write("mirnID,sequenceID,sequenceStart,sequenceEnd,mreType,mirnaStart,mirnaEnd\n");
+				buf.write("mirnaID,sequenceID,sequenceStart,sequenceEnd,mreType,hasA1site,hasUA9site,hasCompensatorySite\n");
 			else
-				buf.write("mirnID,sequenceID,sequenceStart,sequenceEnd,mreType,mirnaStart,mirnaEnd,hasUA9,hasCompensatory\n");
+				buf.write("mirnaID,sequenceID,sequenceStart,sequenceEnd,mreType,hasA1site,hasUA9site,hasCompensatorySite,freeEnergy,conservation\n");
 
 			while (true) {
 				// check if there are no longer MREs added to the BlockingQueue
